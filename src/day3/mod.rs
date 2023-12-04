@@ -89,6 +89,28 @@ pub fn day3_1() {
 
     println!("{}", s);
 }
+
+pub fn day3_2() {
+    let binding =
+        fs::read_to_string("src/day3/input.txt").expect("Should have been able to read the file");
+    let lines = binding.split("\n").filter(|x| *x != "");
+
+    let mut s = 0;
+
+    let g = Grid::new_from_string(lines);
+    for (key, value) in &g.grid_data {
+        if *value == '*' {
+            let surr_nums = find_surr_nums(*key, &g);
+            let nums = number_from_digit_coord(&g, surr_nums);
+            if (nums.iter().len() == 2) {
+                s += nums.iter().fold(1, |acc, x| acc * x);
+            }
+        }
+    }
+
+    println!("{}", s);
+}
+
 #[derive(Debug)]
 struct Grid {
     size: (usize, usize),
